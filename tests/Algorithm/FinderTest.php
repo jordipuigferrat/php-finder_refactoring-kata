@@ -6,6 +6,7 @@ namespace CodelyTV\FinderKataTest\Algorithm;
 
 use CodelyTV\FinderKata\Algorithm\Finder;
 use CodelyTV\FinderKata\Algorithm\Criteria;
+use CodelyTV\FinderKata\Algorithm\NotEnoughPersonsException;
 use CodelyTV\FinderKata\Algorithm\Person;
 use DateTime;
 use PHPUnit\Framework\TestCase;
@@ -28,70 +29,74 @@ final class FinderTest extends TestCase
     /** @test */
     public function should_return_empty_when_given_empty_list()
     {
-        $list = [];
-        $finder = new Finder($list);
+        $this->expectException(NotEnoughPersonsException::class);
 
-        $result = $finder->find(Criteria::ONE);
+        $persons = [];
+        $finder = new Finder($persons);
 
-        $this->assertEquals(null, $result->p1);
-        $this->assertEquals(null, $result->p2);
+        $couple = $finder->find(Criteria::ONE);
+
+        $this->assertEquals(null, $couple->older());
+        $this->assertEquals(null, $couple->younger());
     }
 
     /** @test */
     public function should_return_empty_when_given_one_person()
     {
-        $list = [];
-        $list[] = $this->sue;
-        $finder = new Finder($list);
+        $this->expectException(NotEnoughPersonsException::class);
 
-        $result = $finder->find(Criteria::ONE);
+        $persons = [];
+        $persons[] = $this->sue;
+        $finder = new Finder($persons);
 
-        $this->assertEquals(null, $result->p1);
-        $this->assertEquals(null, $result->p2);
+        $couple = $finder->find(Criteria::ONE);
+
+        $this->assertEquals(null, $couple->older());
+        $this->assertEquals(null, $couple->younger());
     }
 
     /** @test */
     public function should_return_closest_two_for_two_people()
     {
-        $list = [];
-        $list[] = $this->sue;
-        $list[] = $this->greg;
-        $finder = new Finder($list);
+        $persons = [];
+        $persons[] = $this->sue;
+        $persons[] = $this->greg;
+        $finder = new Finder($persons);
 
-        $result = $finder->find(Criteria::ONE);
+        $couple = $finder->find(Criteria::ONE);
 
-        $this->assertEquals($this->sue, $result->p1);
-        $this->assertEquals($this->greg, $result->p2);
+        $this->assertEquals($this->sue, $couple->older());
+        $this->assertEquals($this->greg, $couple->younger());
     }
 
     /** @test */
     public function should_return_furthest_two_for_two_people()
     {
-        $list = [];
-        $list[] = $this->mike;
-        $list[] = $this->greg;
-        $finder = new Finder($list);
+        $persons = [];
+        $persons[] = $this->mike;
+        $persons[] = $this->greg;
+        $finder = new Finder($persons);
 
-        $result = $finder->find(Criteria::TWO);
+        $couple = $finder->find(Criteria::TWO);
 
-        $this->assertEquals($this->greg, $result->p1);
-        $this->assertEquals($this->mike, $result->p2);
+        $this->assertEquals($this->greg, $couple->older());
+        $this->assertEquals($this->mike, $couple->younger());
     }
 
     /** @test */
     public function should_return_furthest_two_for_four_people()
     {
-        $list = [];
-        $list[] = $this->sue;
-        $list[] = $this->sarah;
-        $list[] = $this->mike;
-        $list[] = $this->greg;
-        $finder = new Finder($list);
+        $persons = [];
+        $persons[] = $this->sue;
+        $persons[] = $this->sarah;
+        $persons[] = $this->mike;
+        $persons[] = $this->greg;
+        $finder = new Finder($persons);
 
-        $result = $finder->find(Criteria::TWO);
+        $couple = $finder->find(Criteria::TWO);
 
-        $this->assertEquals($this->sue, $result->p1);
-        $this->assertEquals($this->sarah, $result->p2);
+        $this->assertEquals($this->sue, $couple->older());
+        $this->assertEquals($this->sarah, $couple->younger());
     }
 
     /**
@@ -99,16 +104,16 @@ final class FinderTest extends TestCase
      */
     public function should_return_closest_two_for_four_people()
     {
-        $list = [];
-        $list[] = $this->sue;
-        $list[] = $this->sarah;
-        $list[] = $this->mike;
-        $list[] = $this->greg;
-        $finder = new Finder($list);
+        $persons = [];
+        $persons[] = $this->sue;
+        $persons[] = $this->sarah;
+        $persons[] = $this->mike;
+        $persons[] = $this->greg;
+        $finder = new Finder($persons);
 
-        $result = $finder->find(Criteria::ONE);
+        $couple = $finder->find(Criteria::ONE);
 
-        $this->assertEquals($this->sue, $result->p1);
-        $this->assertEquals($this->greg, $result->p2);
+        $this->assertEquals($this->sue, $couple->older());
+        $this->assertEquals($this->greg, $couple->younger());
     }
 }

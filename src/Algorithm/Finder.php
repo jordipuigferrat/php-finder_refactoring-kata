@@ -13,51 +13,43 @@ final class Finder
         $this->persons = $persons;
     }
 
-    public function find(int $ft): Couple
+    public function find(int $ft): ?Couple
     {
         $couples = [];
 
         for ($i = 0; $i < count($this->persons); $i++) {
             for ($j = $i + 1; $j < count($this->persons); $j++) {
-                $r = new Couple();
-
                 if ($this->persons[$i]->birthDate() < $this->persons[$j]->birthDate()) {
-                    $r->p1 = $this->persons[$i];
-                    $r->p2 = $this->persons[$j];
+                    $couple = Couple::create($this->persons[$i],$this->persons[$j]);
                 } else {
-                    $r->p1 = $this->persons[$j];
-                    $r->p2 = $this->persons[$i];
+                    $couple = Couple::create($this->persons[$j],$this->persons[$i]);
+
                 }
-
-                $r->d = $r->p2->birthDate()->getTimestamp()
-                    - $r->p1->birthDate()->getTimestamp();
-
-                $couples[] = $r;
+                $couples[] = $couple;
             }
         }
 
         if (count($couples) < 1) {
-            return new Couple();
+            throw new NotEnoughPersonsException();
         }
 
-        $answer = $couples[0];
-
-        foreach ($couples as $result) {
+        $coupleCriteriaApplied = $couples[0];
+        foreach ($couples as $couple) {
             switch ($ft) {
                 case Criteria::ONE:
-                    if ($result->d < $answer->d) {
-                        $answer = $result;
+                    if ($couple->differenceInSeconds() < $coupleCriteriaApplied->differenceInSeconds()) {
+                        $coupleCriteriaApplied = $couple;
                     }
                     break;
 
                 case Criteria::TWO:
-                    if ($result->d > $answer->d) {
-                        $answer = $result;
+                    if ($couple->differenceInSeconds() > $coupleCriteriaApplied->differenceInSeconds()) {
+                        $coupleCriteriaApplied = $couple;
                     }
                     break;
             }
         }
 
-        return $answer;
+        return $coupleCriteriaApplied;
     }
 }
