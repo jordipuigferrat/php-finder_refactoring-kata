@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace CodelyTV\FinderKataTest\Algorithm;
 
+use CodelyTV\FinderKata\Algorithm\CoupleCriteriaClosest;
+use CodelyTV\FinderKata\Algorithm\CoupleCriteriaFurthest;
 use CodelyTV\FinderKata\Algorithm\Finder;
-use CodelyTV\FinderKata\Algorithm\Criteria;
+use CodelyTV\FinderKata\Algorithm\CoupleCriteria;
 use CodelyTV\FinderKata\Algorithm\NotEnoughPersonsException;
 use CodelyTV\FinderKata\Algorithm\Person;
 use DateTime;
@@ -34,10 +36,7 @@ final class FinderTest extends TestCase
         $persons = [];
         $finder = new Finder(...$persons);
 
-        $couple = $finder->find(Criteria::ONE);
-
-        $this->assertEquals(null, $couple->older());
-        $this->assertEquals(null, $couple->younger());
+        $finder->find(new CoupleCriteriaClosest());
     }
 
     /** @test */
@@ -49,10 +48,7 @@ final class FinderTest extends TestCase
         $persons[] = $this->sue;
         $finder = new Finder(...$persons);
 
-        $couple = $finder->find(Criteria::ONE);
-
-        $this->assertEquals(null, $couple->older());
-        $this->assertEquals(null, $couple->younger());
+        $finder->find(new CoupleCriteriaClosest());
     }
 
     /** @test */
@@ -63,7 +59,7 @@ final class FinderTest extends TestCase
         $persons[] = $this->greg;
         $finder = new Finder(...$persons);
 
-        $couple = $finder->find(Criteria::ONE);
+        $couple = $finder->find(new CoupleCriteriaClosest());
 
         $this->assertEquals($this->sue, $couple->older());
         $this->assertEquals($this->greg, $couple->younger());
@@ -77,7 +73,7 @@ final class FinderTest extends TestCase
         $persons[] = $this->greg;
         $finder = new Finder(...$persons);
 
-        $couple = $finder->find(Criteria::TWO);
+        $couple = $finder->find(new CoupleCriteriaFurthest());
 
         $this->assertEquals($this->greg, $couple->older());
         $this->assertEquals($this->mike, $couple->younger());
@@ -93,7 +89,7 @@ final class FinderTest extends TestCase
         $persons[] = $this->greg;
         $finder = new Finder(...$persons);
 
-        $couple = $finder->find(Criteria::TWO);
+        $couple = $finder->find(new CoupleCriteriaFurthest());
 
         $this->assertEquals($this->sue, $couple->older());
         $this->assertEquals($this->sarah, $couple->younger());
@@ -111,7 +107,7 @@ final class FinderTest extends TestCase
         $persons[] = $this->greg;
         $finder = new Finder(...$persons);
 
-        $couple = $finder->find(Criteria::ONE);
+        $couple = $finder->find(new CoupleCriteriaClosest());
 
         $this->assertEquals($this->sue, $couple->older());
         $this->assertEquals($this->greg, $couple->younger());

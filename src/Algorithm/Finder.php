@@ -15,7 +15,7 @@ final class Finder
         $this->coupleFactory = new CoupleFactory();
     }
 
-    public function find(int $ft): Couple
+    public function find(CoupleCriteria $criteria): Couple
     {
         $couples = $this->doCouples();
 
@@ -23,24 +23,7 @@ final class Finder
             throw new NotEnoughPersonsException();
         }
 
-        $coupleCriteriaApplied = $couples[0];
-        foreach ($couples as $couple) {
-            switch ($ft) {
-                case Criteria::ONE:
-                    if ($couple->differenceInSeconds() < $coupleCriteriaApplied->differenceInSeconds()) {
-                        $coupleCriteriaApplied = $couple;
-                    }
-                    break;
-
-                case Criteria::TWO:
-                    if ($couple->differenceInSeconds() > $coupleCriteriaApplied->differenceInSeconds()) {
-                        $coupleCriteriaApplied = $couple;
-                    }
-                    break;
-            }
-        }
-
-        return $coupleCriteriaApplied;
+        return $criteria->apply(...$couples);
     }
 
     private function doCouples(): array

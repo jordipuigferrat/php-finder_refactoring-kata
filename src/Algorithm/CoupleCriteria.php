@@ -4,8 +4,7 @@ declare(strict_types = 1);
 
 namespace CodelyTV\FinderKata\Algorithm;
 
-interface Criteria
+interface CoupleCriteria
 {
-    const ONE = 1;
-    const TWO = 2;
+    public function apply(Couple ...$couples): Couple;
 }
