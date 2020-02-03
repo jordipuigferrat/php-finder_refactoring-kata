@@ -6,7 +6,7 @@ namespace CodelyTV\FinderKata\Algorithm;
 
 final class Finder
 {
-    /** @var Thing[] */
+    /** @var Person[] */
     private $_p;
 
     public function __construct(array $p)
@@ -14,14 +14,14 @@ final class Finder
         $this->_p = $p;
     }
 
-    public function find(int $ft): F
+    public function find(int $ft): Couple
     {
-        /** @var F[] $tr */
+        /** @var Couple[] $tr */
         $tr = [];
 
         for ($i = 0; $i < count($this->_p); $i++) {
             for ($j = $i + 1; $j < count($this->_p); $j++) {
-                $r = new F();
+                $r = new Couple();
 
                 if ($this->_p[$i]->birthDate < $this->_p[$j]->birthDate) {
                     $r->p1 = $this->_p[$i];
@@ -39,20 +39,20 @@ final class Finder
         }
 
         if (count($tr) < 1) {
-            return new F();
+            return new Couple();
         }
 
         $answer = $tr[0];
 
         foreach ($tr as $result) {
             switch ($ft) {
-                case FT::ONE:
+                case Criteria::ONE:
                     if ($result->d < $answer->d) {
                         $answer = $result;
                     }
                     break;
 
-                case FT::TWO:
+                case Criteria::TWO:
                     if ($result->d > $answer->d) {
                         $answer = $result;
                     }

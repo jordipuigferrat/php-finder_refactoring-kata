@@ -5,4 +5,4 @@ build: ## Builds the docker container and installs dependencies
 	docker build -t finder-kata .
 
 test: ## Run unit tests
-	@docker run --rm -v `pwd`/src:/usr/app/src -v `pwd`/tests:/usr/app/tests finder-kata
+	@docker run --rm -v ${CURDIR}/src:/usr/app/src -v ${CURDIR}/tests:/usr/app/tests finder-kata
