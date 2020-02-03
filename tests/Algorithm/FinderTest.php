@@ -32,7 +32,7 @@ final class FinderTest extends TestCase
         $this->expectException(NotEnoughPersonsException::class);
 
         $persons = [];
-        $finder = new Finder($persons);
+        $finder = new Finder(...$persons);
 
         $couple = $finder->find(Criteria::ONE);
 
@@ -47,7 +47,7 @@ final class FinderTest extends TestCase
 
         $persons = [];
         $persons[] = $this->sue;
-        $finder = new Finder($persons);
+        $finder = new Finder(...$persons);
 
         $couple = $finder->find(Criteria::ONE);
 
@@ -61,7 +61,7 @@ final class FinderTest extends TestCase
         $persons = [];
         $persons[] = $this->sue;
         $persons[] = $this->greg;
-        $finder = new Finder($persons);
+        $finder = new Finder(...$persons);
 
         $couple = $finder->find(Criteria::ONE);
 
@@ -75,7 +75,7 @@ final class FinderTest extends TestCase
         $persons = [];
         $persons[] = $this->mike;
         $persons[] = $this->greg;
-        $finder = new Finder($persons);
+        $finder = new Finder(...$persons);
 
         $couple = $finder->find(Criteria::TWO);
 
@@ -91,7 +91,7 @@ final class FinderTest extends TestCase
         $persons[] = $this->sarah;
         $persons[] = $this->mike;
         $persons[] = $this->greg;
-        $finder = new Finder($persons);
+        $finder = new Finder(...$persons);
 
         $couple = $finder->find(Criteria::TWO);
 
@@ -109,7 +109,7 @@ final class FinderTest extends TestCase
         $persons[] = $this->sarah;
         $persons[] = $this->mike;
         $persons[] = $this->greg;
-        $finder = new Finder($persons);
+        $finder = new Finder(...$persons);
 
         $couple = $finder->find(Criteria::ONE);
 
