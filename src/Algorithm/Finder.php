@@ -6,45 +6,43 @@ namespace CodelyTV\FinderKata\Algorithm;
 
 final class Finder
 {
-    /** @var Person[] */
-    private $_p;
+    private $persons;
 
-    public function __construct(array $p)
+    public function __construct(array $persons)
     {
-        $this->_p = $p;
+        $this->persons = $persons;
     }
 
     public function find(int $ft): Couple
     {
-        /** @var Couple[] $tr */
-        $tr = [];
+        $couples = [];
 
-        for ($i = 0; $i < count($this->_p); $i++) {
-            for ($j = $i + 1; $j < count($this->_p); $j++) {
+        for ($i = 0; $i < count($this->persons); $i++) {
+            for ($j = $i + 1; $j < count($this->persons); $j++) {
                 $r = new Couple();
 
-                if ($this->_p[$i]->birthDate < $this->_p[$j]->birthDate) {
-                    $r->p1 = $this->_p[$i];
-                    $r->p2 = $this->_p[$j];
+                if ($this->persons[$i]->birthDate() < $this->persons[$j]->birthDate()) {
+                    $r->p1 = $this->persons[$i];
+                    $r->p2 = $this->persons[$j];
                 } else {
-                    $r->p1 = $this->_p[$j];
-                    $r->p2 = $this->_p[$i];
+                    $r->p1 = $this->persons[$j];
+                    $r->p2 = $this->persons[$i];
                 }
 
-                $r->d = $r->p2->birthDate->getTimestamp()
-                    - $r->p1->birthDate->getTimestamp();
+                $r->d = $r->p2->birthDate()->getTimestamp()
+                    - $r->p1->birthDate()->getTimestamp();
 
-                $tr[] = $r;
+                $couples[] = $r;
             }
         }
 
-        if (count($tr) < 1) {
+        if (count($couples) < 1) {
             return new Couple();
         }
 
-        $answer = $tr[0];
+        $answer = $couples[0];
 
-        foreach ($tr as $result) {
+        foreach ($couples as $result) {
             switch ($ft) {
                 case Criteria::ONE:
                     if ($result->d < $answer->d) {
