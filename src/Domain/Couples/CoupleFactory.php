@@ -10,7 +10,7 @@ final class CoupleFactory
 {
     public function __invoke(Person $personOne, Person $personTwo): Couple
     {
-        if ($personOne->birthDate() < $personTwo->birthDate()) {
+        if ($personOne->isOlderThan($personTwo)) {
             return Couple::create($personOne, $personTwo);
         } else {
             return Couple::create($personTwo, $personOne);

@@ -16,7 +16,7 @@ final class Couple
     {
         $this->older = $older;
         $this->younger = $younger;
-        $this->differenceInSeconds = $younger->birthDate()->getTimestamp() - $older->birthDate()->getTimestamp();
+        $this->differenceInSeconds = $this->calculateDifferenceInSeconds();
     }
 
     public static function create(Person $older, Person $younger): self
@@ -34,8 +34,13 @@ final class Couple
         return $this->younger;
     }
 
-    public function differenceInSeconds(): int
+    public function differenceInSeconds(): CoupleDifferenceInSeconds
     {
         return $this->differenceInSeconds;
+    }
+
+    private function calculateDifferenceInSeconds(): CoupleDifferenceInSeconds
+    {
+        return new CoupleDifferenceInSeconds($this->younger()->birthDate()->calculateDifferenceInSeconds($this->older()->birthDate()));
     }
 }

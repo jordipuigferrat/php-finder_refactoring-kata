@@ -9,6 +9,8 @@ use CodelyTV\FinderKata\Domain\Couples\Criteria\CoupleCriteriaClosest;
 use CodelyTV\FinderKata\Domain\Couples\Criteria\CoupleCriteriaFurthest;
 use CodelyTV\FinderKata\Domain\Couples\NotEnoughPersonsException;
 use CodelyTV\FinderKata\Domain\Persons\Person;
+use CodelyTV\FinderKata\Domain\Persons\PersonBirthDate;
+use CodelyTV\FinderKata\Domain\Persons\PersonName;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 
@@ -21,10 +23,10 @@ final class CoupleFinderTest extends TestCase
 
     protected function setUp()
     {
-        $this->sue = Person::create('Sue', new DateTime('1950-01-01'));
-        $this->greg = Person::create('Greg', new DateTime('1952-05-01'));
-        $this->sarah = Person::create('Sarah', new DateTime('1982-01-01'));
-        $this->mike = Person::create('Mike', new DateTime('1979-01-01'));
+        $this->sue = Person::create(new PersonName('Sue'), new PersonBirthDate('1950-01-01'));
+        $this->greg = Person::create(new PersonName('Greg'), new PersonBirthDate('1952-05-01'));
+        $this->sarah = Person::create(new PersonName('Sarah'), new PersonBirthDate('1982-01-01'));
+        $this->mike = Person::create(new PersonName('Mike'), new PersonBirthDate('1979-01-01'));
     }
 
     /** @test */
