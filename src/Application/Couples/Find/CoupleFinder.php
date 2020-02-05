@@ -2,9 +2,15 @@
 
 declare(strict_types=1);
 
-namespace CodelyTV\FinderKata\Algorithm;
+namespace CodelyTV\FinderKata\Application\Couples\Find;
 
-final class Finder
+use CodelyTV\FinderKata\Domain\Couples\Couple;
+use CodelyTV\FinderKata\Domain\Couples\CoupleFactory;
+use CodelyTV\FinderKata\Domain\Couples\Criteria\CoupleCriteria;
+use CodelyTV\FinderKata\Domain\Couples\NotEnoughPersonsException;
+use CodelyTV\FinderKata\Domain\Persons\Person;
+
+final class CoupleFinder
 {
     private $persons;
     private $coupleFactory;
@@ -17,7 +23,7 @@ final class Finder
 
     public function find(CoupleCriteria $criteria): Couple
     {
-        $couples = $this->doCouples();
+        $couples = $this->makeCouples();
 
         if ($this->hasNoCouples(...$couples)) {
             throw new NotEnoughPersonsException();
@@ -26,7 +32,7 @@ final class Finder
         return $criteria->apply(...$couples);
     }
 
-    private function doCouples(): array
+    private function makeCouples(): array
     {
         $couples = [];
         $numPersons = count($this->persons);

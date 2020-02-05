@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CodelyTV\FinderKata\Algorithm;
+namespace CodelyTV\FinderKata\Domain\Couples;
+
+use CodelyTV\FinderKata\Domain\Persons\Person;
 
 final class Couple
 {

@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace CodelyTV\FinderKataTest\Algorithm;
 
-use CodelyTV\FinderKata\Algorithm\CoupleCriteriaClosest;
-use CodelyTV\FinderKata\Algorithm\CoupleCriteriaFurthest;
-use CodelyTV\FinderKata\Algorithm\Finder;
-use CodelyTV\FinderKata\Algorithm\CoupleCriteria;
-use CodelyTV\FinderKata\Algorithm\NotEnoughPersonsException;
-use CodelyTV\FinderKata\Algorithm\Person;
+use CodelyTV\FinderKata\Application\Couples\Find\CoupleFinder;
+use CodelyTV\FinderKata\Domain\Couples\Criteria\CoupleCriteriaClosest;
+use CodelyTV\FinderKata\Domain\Couples\Criteria\CoupleCriteriaFurthest;
+use CodelyTV\FinderKata\Domain\Couples\NotEnoughPersonsException;
+use CodelyTV\FinderKata\Domain\Persons\Person;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 
-final class FinderTest extends TestCase
+final class CoupleFinderTest extends TestCase
 {
     private $sue;
     private $greg;
@@ -34,7 +33,7 @@ final class FinderTest extends TestCase
         $this->expectException(NotEnoughPersonsException::class);
 
         $persons = [];
-        $finder = new Finder(...$persons);
+        $finder = new CoupleFinder(...$persons);
 
         $finder->find(new CoupleCriteriaClosest());
     }
@@ -46,7 +45,7 @@ final class FinderTest extends TestCase
 
         $persons = [];
         $persons[] = $this->sue;
-        $finder = new Finder(...$persons);
+        $finder = new CoupleFinder(...$persons);
 
         $finder->find(new CoupleCriteriaClosest());
     }
@@ -57,7 +56,7 @@ final class FinderTest extends TestCase
         $persons = [];
         $persons[] = $this->sue;
         $persons[] = $this->greg;
-        $finder = new Finder(...$persons);
+        $finder = new CoupleFinder(...$persons);
 
         $couple = $finder->find(new CoupleCriteriaClosest());
 
@@ -71,7 +70,7 @@ final class FinderTest extends TestCase
         $persons = [];
         $persons[] = $this->mike;
         $persons[] = $this->greg;
-        $finder = new Finder(...$persons);
+        $finder = new CoupleFinder(...$persons);
 
         $couple = $finder->find(new CoupleCriteriaFurthest());
 
@@ -87,7 +86,7 @@ final class FinderTest extends TestCase
         $persons[] = $this->sarah;
         $persons[] = $this->mike;
         $persons[] = $this->greg;
-        $finder = new Finder(...$persons);
+        $finder = new CoupleFinder(...$persons);
 
         $couple = $finder->find(new CoupleCriteriaFurthest());
 
@@ -105,7 +104,7 @@ final class FinderTest extends TestCase
         $persons[] = $this->sarah;
         $persons[] = $this->mike;
         $persons[] = $this->greg;
-        $finder = new Finder(...$persons);
+        $finder = new CoupleFinder(...$persons);
 
         $couple = $finder->find(new CoupleCriteriaClosest());
 
