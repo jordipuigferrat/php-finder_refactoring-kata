@@ -18,17 +18,17 @@ final class CoupleDifferenceInSeconds
         return $this->value;
     }
 
-    public function isEqualsTo(DifferenceInSeconds $differenceInSeconds): bool
+    public function isEqualsTo(CoupleDifferenceInSeconds $differenceInSeconds): bool
     {
         return $this->value === $differenceInSeconds->value();
     }
 
-    public function isHigherThan(DifferenceInSeconds $differenceInSeconds): bool
+    public function isHigherThan(CoupleDifferenceInSeconds $differenceInSeconds): bool
     {
         return $this->value > $differenceInSeconds->value();
     }
 
-    public function isLowerThan(DifferenceInSeconds $differenceInSeconds): bool
+    public function isLowerThan(CoupleDifferenceInSeconds $differenceInSeconds): bool
     {
         return $this->value < $differenceInSeconds->value();
     }

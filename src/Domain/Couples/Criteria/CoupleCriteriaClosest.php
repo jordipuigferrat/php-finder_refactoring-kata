@@ -17,10 +17,11 @@ final class CoupleCriteriaClosest implements CoupleCriteria
     private function sortClosestCouple(): callable
     {
         return static function (Couple $coupleOne, Couple $coupleTwo): int {
-            if ($coupleOne->differenceInSeconds() === $coupleTwo->differenceInSeconds()) {
+
+            if ($coupleOne->differenceInSeconds()->isEqualsTo($coupleTwo->differenceInSeconds())) {
                 return 0;
             }
-            return $coupleOne->differenceInSeconds() < $coupleTwo->differenceInSeconds() ? -1 : 1;
+            return $coupleOne->differenceInSeconds()->isLowerThan($coupleTwo->differenceInSeconds()) ? -1 : 1;
         };
     }
 }
