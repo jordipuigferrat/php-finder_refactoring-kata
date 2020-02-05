@@ -12,41 +12,37 @@ use CodelyTV\FinderKata\Domain\Persons\Person;
 
 final class CoupleFinder
 {
-    private $persons;
     private $coupleFactory;
 
-    public function __construct(Person ...$persons)
+    public function __construct()
     {
-        $this->persons = $persons;
         $this->coupleFactory = new CoupleFactory();
     }
 
-    public function find(CoupleCriteria $criteria): Couple
+    public function find(CoupleCriteria $criteria, Person ...$persons): Couple
     {
-        $couples = $this->makeCouples();
-
-        if ($this->hasNoCouples(...$couples)) {
-            throw new NotEnoughPersonsException();
-        }
-
+        $this->ensureMakeCouples(...$persons);
+        $couples = $this->makeCouples(...$persons);
         return $criteria->apply(...$couples);
     }
 
-    private function makeCouples(): array
+    private function makeCouples(Person ...$persons): array
     {
         $couples = [];
-        $numPersons = count($this->persons);
+        $numPersons = count($persons);
 
         for ($i = 0; $i < $numPersons; $i++) {
             for ($j = $i + 1; $j < $numPersons; $j++) {
-                $couples[] = $this->coupleFactory->__invoke($this->persons[$i], $this->persons[$j]);
+                $couples[] = $this->coupleFactory->__invoke($persons[$i], $persons[$j]);
             }
         }
         return $couples;
     }
 
-    private function hasNoCouples(Couple ...$couples): bool
+    private function ensureMakeCouples(Person ...$persons)
     {
-        return count($couples) === 0;
+        if(count($persons) <2){
+            throw new NotEnoughPersonsException();
+        }
     }
 }

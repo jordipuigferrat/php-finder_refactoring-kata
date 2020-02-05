@@ -17,6 +17,8 @@ use PHPUnit\Framework\TestCase;
 
 final class CoupleFinderTest extends TestCase
 {
+    private $finder;
+
     private $sue;
     private $greg;
     private $sarah;
@@ -24,6 +26,8 @@ final class CoupleFinderTest extends TestCase
 
     protected function setUp()
     {
+        $this->finder = new CoupleFinder();
+
         $this->sue = PersonMother::with('Sue', '1950-01-01');
         $this->greg = PersonMother::with('Greg', '1952-05-01');
         $this->sarah = PersonMother::with('Sarah', '1982-01-01');
@@ -36,9 +40,8 @@ final class CoupleFinderTest extends TestCase
         $this->expectException(NotEnoughPersonsException::class);
 
         $persons = [];
-        $finder = new CoupleFinder(...$persons);
 
-        $finder->find(new CoupleCriteriaClosest());
+        $this->finder->find(new CoupleCriteriaClosest(), ...$persons);
     }
 
     /** @test */
@@ -46,22 +49,17 @@ final class CoupleFinderTest extends TestCase
     {
         $this->expectException(NotEnoughPersonsException::class);
 
-        $persons = [];
-        $persons[] = $this->sue;
-        $finder = new CoupleFinder(...$persons);
+        $persons = [$this->sue];
 
-        $finder->find(new CoupleCriteriaClosest());
+        $this->finder->find(new CoupleCriteriaClosest(), ...$persons);
     }
 
     /** @test */
     public function should_return_closest_two_for_two_people()
     {
-        $persons = [];
-        $persons[] = $this->sue;
-        $persons[] = $this->greg;
-        $finder = new CoupleFinder(...$persons);
+        $persons = [$this->sue, $this->greg];
 
-        $couple = $finder->find(new CoupleCriteriaClosest());
+        $couple = $this->finder->find(new CoupleCriteriaClosest(), ...$persons);
 
         $this->assertEquals($this->sue, $couple->older());
         $this->assertEquals($this->greg, $couple->younger());
@@ -70,12 +68,9 @@ final class CoupleFinderTest extends TestCase
     /** @test */
     public function should_return_furthest_two_for_two_people()
     {
-        $persons = [];
-        $persons[] = $this->mike;
-        $persons[] = $this->greg;
-        $finder = new CoupleFinder(...$persons);
+        $persons = [$this->mike, $this->greg];
 
-        $couple = $finder->find(new CoupleCriteriaFurthest());
+        $couple = $this->finder->find(new CoupleCriteriaFurthest(), ...$persons);
 
         $this->assertEquals($this->greg, $couple->older());
         $this->assertEquals($this->mike, $couple->younger());
@@ -84,14 +79,9 @@ final class CoupleFinderTest extends TestCase
     /** @test */
     public function should_return_furthest_two_for_four_people()
     {
-        $persons = [];
-        $persons[] = $this->sue;
-        $persons[] = $this->sarah;
-        $persons[] = $this->mike;
-        $persons[] = $this->greg;
-        $finder = new CoupleFinder(...$persons);
+        $persons = [$this->sue, $this->sarah,$this->mike,$this->greg];
 
-        $couple = $finder->find(new CoupleCriteriaFurthest());
+        $couple = $this->finder->find(new CoupleCriteriaFurthest(), ...$persons);
 
         $this->assertEquals($this->sue, $couple->older());
         $this->assertEquals($this->sarah, $couple->younger());
@@ -102,14 +92,9 @@ final class CoupleFinderTest extends TestCase
      */
     public function should_return_closest_two_for_four_people()
     {
-        $persons = [];
-        $persons[] = $this->sue;
-        $persons[] = $this->sarah;
-        $persons[] = $this->mike;
-        $persons[] = $this->greg;
-        $finder = new CoupleFinder(...$persons);
+        $persons = [$this->sue, $this->sarah,$this->mike,$this->greg];
 
-        $couple = $finder->find(new CoupleCriteriaClosest());
+        $couple = $this->finder->find(new CoupleCriteriaClosest(), ...$persons);
 
         $this->assertEquals($this->sue, $couple->older());
         $this->assertEquals($this->greg, $couple->younger());
