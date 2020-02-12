@@ -8,7 +8,7 @@ use CodelyTV\FinderKata\Domain\Persons\Person;
 
 final class CoupleFactory
 {
-    public function __invoke(Person $personOne, Person $personTwo): Couple
+    public static function create(Person $personOne, Person $personTwo): Couple
     {
         if ($personOne->isOlderThan($personTwo)) {
             return Couple::create($personOne, $personTwo);
