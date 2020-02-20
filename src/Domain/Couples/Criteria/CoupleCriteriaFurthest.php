@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace CodelyTV\FinderKata\Domain\Couples\Criteria;
 
 use CodelyTV\FinderKata\Domain\Couples\Couple;
+use CodelyTV\FinderKata\Domain\Couples\Couples;
 
 final class CoupleCriteriaFurthest implements CoupleCriteria
 {
-    public function apply(Couple ...$couples): Couple
+    public function apply(Couples $couples): Couple
     {
-        usort($couples, $this->sortFurthestCouple());
-        return $couples[0];
+        $sortedCouples = $couples->sortBy($this->sortFurthestCouple());
+        return $sortedCouples[0];
     }
 
     private function sortFurthestCouple(): callable

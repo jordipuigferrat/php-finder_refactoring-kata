@@ -7,11 +7,12 @@ namespace CodelyTV\FinderKataTest\Algorithm;
 use CodelyTV\FinderKata\Application\Couples\Find\CoupleFinder;
 use CodelyTV\FinderKata\Domain\Couples\Criteria\CoupleCriteriaClosest;
 use CodelyTV\FinderKata\Domain\Couples\Criteria\CoupleCriteriaFurthest;
-use CodelyTV\FinderKata\Domain\Couples\NotEnoughPersonsException;
+use CodelyTV\FinderKata\Domain\Couples\CouplesNotFoundException;
 use CodelyTV\FinderKata\Domain\Persons\Person;
 use CodelyTV\FinderKata\Domain\Persons\PersonBirthDate;
 use CodelyTV\FinderKata\Domain\Persons\PersonName;
 use CodelyTV\FinderKataTest\Domain\Persons\PersonMother;
+use CodelyTV\FinderKataTest\Domain\Persons\PersonsMother;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 
@@ -37,29 +38,29 @@ final class CoupleFinderTest extends TestCase
     /** @test */
     public function should_return_empty_when_given_empty_list()
     {
-        $this->expectException(NotEnoughPersonsException::class);
+        $this->expectException(CouplesNotFoundException::class);
 
-        $persons = [];
+        $persons = PersonsMother::empty();
 
-        $this->finder->find(new CoupleCriteriaClosest(), ...$persons);
+        $this->finder->find(new CoupleCriteriaClosest(), $persons);
     }
 
     /** @test */
     public function should_return_empty_when_given_one_person()
     {
-        $this->expectException(NotEnoughPersonsException::class);
+        $this->expectException(CouplesNotFoundException::class);
 
-        $persons = [$this->sue];
+        $persons = PersonsMother::with(...[$this->sue]);
 
-        $this->finder->find(new CoupleCriteriaClosest(), ...$persons);
+        $this->finder->find(new CoupleCriteriaClosest(), $persons);
     }
 
     /** @test */
     public function should_return_closest_two_for_two_people()
     {
-        $persons = [$this->sue, $this->greg];
+        $persons = PersonsMother::with(...[$this->sue, $this->greg]);
 
-        $couple = $this->finder->find(new CoupleCriteriaClosest(), ...$persons);
+        $couple = $this->finder->find(new CoupleCriteriaClosest(), $persons);
 
         $this->assertEquals($this->sue, $couple->older());
         $this->assertEquals($this->greg, $couple->younger());
@@ -68,9 +69,9 @@ final class CoupleFinderTest extends TestCase
     /** @test */
     public function should_return_furthest_two_for_two_people()
     {
-        $persons = [$this->mike, $this->greg];
+        $persons = PersonsMother::with(...[$this->mike, $this->greg]);
 
-        $couple = $this->finder->find(new CoupleCriteriaFurthest(), ...$persons);
+        $couple = $this->finder->find(new CoupleCriteriaFurthest(), $persons);
 
         $this->assertEquals($this->greg, $couple->older());
         $this->assertEquals($this->mike, $couple->younger());
@@ -79,9 +80,9 @@ final class CoupleFinderTest extends TestCase
     /** @test */
     public function should_return_furthest_two_for_four_people()
     {
-        $persons = [$this->sue, $this->sarah,$this->mike,$this->greg];
+        $persons = PersonsMother::with(...[$this->sue, $this->sarah, $this->mike, $this->greg]);
 
-        $couple = $this->finder->find(new CoupleCriteriaFurthest(), ...$persons);
+        $couple = $this->finder->find(new CoupleCriteriaFurthest(), $persons);
 
         $this->assertEquals($this->sue, $couple->older());
         $this->assertEquals($this->sarah, $couple->younger());
@@ -92,9 +93,9 @@ final class CoupleFinderTest extends TestCase
      */
     public function should_return_closest_two_for_four_people()
     {
-        $persons = [$this->sue, $this->sarah,$this->mike,$this->greg];
+        $persons = PersonsMother::with(...[$this->sue, $this->sarah, $this->mike, $this->greg]);
 
-        $couple = $this->finder->find(new CoupleCriteriaClosest(), ...$persons);
+        $couple = $this->finder->find(new CoupleCriteriaClosest(), $persons);
 
         $this->assertEquals($this->sue, $couple->older());
         $this->assertEquals($this->greg, $couple->younger());
